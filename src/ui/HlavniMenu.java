@@ -42,6 +42,7 @@ public class HlavniMenu extends JFrame {
             chyba.setText("Prosim zadej sve jmeno!");
             return;
         }
+        dispose();
     }
 
     public String getJmeno(){
