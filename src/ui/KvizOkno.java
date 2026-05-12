@@ -1,6 +1,7 @@
 package ui;
 
 import manager.SpravceKvizu;
+import model.VysledekQuizu;
 
 import javax.swing.*;
 import java.awt.*;
@@ -20,11 +21,20 @@ public class KvizOkno extends  JFrame {
         setSize(400, 250);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
-        setLayout(new GridLayout(6, 1, 5, 5));
+        setLayout(new GridLayout(5, 1, 5, 5));
 
-        Otazka = new JLabel("", SwingConstants.CENTER);
+        Otazka = new JLabel("", JLabel.CENTER);
         Otazka.setFont(new Font("Arial", Font.BOLD, 14));
         add(Otazka);
+
+        tlacitka = new JButton[4];
+        for (int i = 0; i < 4; i++) {
+            tlacitka[i] = new JButton();
+            final int index = i;
+            tlacitka[i].addActionListener(e -> zpracujOdpoved(tlacitka[index].getText()));
+            add(tlacitka[i]);
+        }
+        zobrazOtazku();
     }
 
     private void zobrazOtazku() {
@@ -37,5 +47,28 @@ public class KvizOkno extends  JFrame {
         }
     }
 
+    private void zpracujOdpoved(String odpoved) {
+        boolean spravna = spravce.zkontrolujOdpoved(odpoved);
 
+        for (JButton t : tlacitka) {
+            t.setEnabled(false);
+            if (t.getText().equals(spravce.getAktualniOtazka().getSpravnaOdpoved())) {
+                t.setBackground(Color.GREEN);
+            } else if (t.getText().equals(odpoved) && !spravna) {
+                t.setBackground(Color.RED);
+            }
+        }
+
+        Timer casovac = new Timer(1000, e -> {
+            if (spravce.masDalsiOtazku()) {
+                spravce.dalsiOtazka();
+                zobrazOtazku();
+            } else {
+                dispose();
+                new VysledkyOkno(new VysledekQuizu(jmenoHrace, spravce.getSkore(), spravce.getCelkemOtazek())).setVisible(true);
+            }
+        });
+        casovac.setRepeats(false);
+        casovac.start();
+    }
 }

@@ -1,5 +1,7 @@
 package ui;
 
+import manager.SpravceKvizu;
+
 import javax.swing.*;
 import java.awt.*;
 
@@ -14,7 +16,7 @@ public class HlavniMenu extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setResizable(false);
-        setLayout(new GridLayout(4,1,10,10));
+        setLayout(new GridLayout(5,1,10,10));
 
         JLabel nadpis = new JLabel("Vytej v Quiz App",JLabel.CENTER);
         nadpis.setFont(new Font("Arial", Font.BOLD, 22));
@@ -43,6 +45,7 @@ public class HlavniMenu extends JFrame {
             return;
         }
         dispose();
+        new KvizOkno(jmeno, new SpravceKvizu()).setVisible(true);
     }
 
     public String getJmeno(){
