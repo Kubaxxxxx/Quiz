@@ -5,11 +5,17 @@ import manager.SpravceKvizu;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Hlavni menu kde hrac zada jmeno a spusti kviz
+ */
 public class HlavniMenu extends JFrame {
 
     private JTextField poleJmeno;
     private JLabel chyba;
 
+    /**
+     * Vytvori a nastavi hlavni menu
+     */
     public HlavniMenu() {
         setTitle("Quiz App");
         setSize(400, 250);
@@ -38,6 +44,9 @@ public class HlavniMenu extends JFrame {
         add(start);
     }
 
+    /**
+     * Zkontroluje jmeno a spusti kviz nebo hodi chybu
+     */
     public void  spustitQuiz() {
         String jmeno = poleJmeno.getText().trim();
         if(jmeno.isEmpty()){
@@ -46,9 +55,5 @@ public class HlavniMenu extends JFrame {
         }
         dispose();
         new KvizOkno(jmeno, new SpravceKvizu()).setVisible(true);
-    }
-
-    public String getJmeno(){
-        return poleJmeno.getText().trim();
     }
 }

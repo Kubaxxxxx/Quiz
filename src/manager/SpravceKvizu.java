@@ -3,15 +3,22 @@ package manager;
 import model.Otazka;
 import model.VyberOdpovedi;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+/**
+ * Spravuje prubeh kvizu
+ */
 public class SpravceKvizu {
     private List<Otazka> otazky;
     private int indexAktualniOtazky;
     private int skore;
 
+    /**
+     * Vytvori spravce, nacte otazky a zobrazi je
+     */
     public SpravceKvizu() {
         otazky = new ArrayList<>();
         indexAktualniOtazky = 0;
@@ -20,6 +27,9 @@ public class SpravceKvizu {
         Collections.shuffle(otazky);
     }
 
+    /**
+     * Naplni seznam otazek
+     */
     private void nactiOtazky() {
         otazky.add(new VyberOdpovedi(
                 "Jaké je hlavní město České republiky?",
@@ -42,10 +52,20 @@ public class SpravceKvizu {
                 new String[]{"Karel Čapek", "Božena Němcová", "Jan Neruda", "Alois Jirásek"}
         ));
     }
+
+    /**
+     * Vrati aktualni otazku
+     * @return Aktualni otazka
+     */
     public Otazka getAktualniOtazka() {
         return otazky.get(indexAktualniOtazky);
     }
 
+    /**
+     * Zkontroluje odpoved a nacte skore pokud je spravna
+     * @param odpoved odpoved uzivatele
+     * @return true pokud je spravna
+     */
     public boolean zkontrolujOdpoved(String odpoved) {
         boolean spravna = getAktualniOtazka().jeSpravna(odpoved);
         if (spravna) skore++;
@@ -66,9 +86,5 @@ public class SpravceKvizu {
 
     public int getCelkemOtazek() {
         return otazky.size();
-    }
-
-    public int getIndexAktualniOtazky() {
-        return indexAktualniOtazky;
     }
 }

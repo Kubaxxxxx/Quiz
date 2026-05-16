@@ -6,13 +6,20 @@ import model.VysledekQuizu;
 import javax.swing.*;
 import java.awt.*;
 
-
+/**
+ * Okno ve kterem probiha samotny kviz
+ */
 public class KvizOkno extends  JFrame {
     private SpravceKvizu spravce;
     private String jmenoHrace;
     private JLabel Otazka;
     private JButton[] tlacitka;
 
+    /**
+     * Vytvori kvizove okno a zobrazi prvni otazku
+     * @param jmenoHrace jméno hráče zadané v hlavním menu
+     * @param spravce spravce kvizu, ktery ridi otazky a skore
+     */
     public KvizOkno(String jmenoHrace, SpravceKvizu spravce) {
         this.jmenoHrace = jmenoHrace;
         this.spravce = spravce;
@@ -27,6 +34,7 @@ public class KvizOkno extends  JFrame {
         Otazka.setFont(new Font("Arial", Font.BOLD, 14));
         add(Otazka);
 
+        //Vytvoreni 4 tlacitek pro odpovedi
         tlacitka = new JButton[4];
         for (int i = 0; i < 4; i++) {
             tlacitka[i] = new JButton();
@@ -34,9 +42,13 @@ public class KvizOkno extends  JFrame {
             tlacitka[i].addActionListener(e -> zpracujOdpoved(tlacitka[index].getText()));
             add(tlacitka[i]);
         }
+        // Zobrazí první otázku
         zobrazOtazku();
     }
 
+    /**
+     * Zobrazi aktualni otazku a moznosti odpovedi
+     */
     private void zobrazOtazku() {
         Otazka.setText(spravce.getAktualniOtazka().getTextOtazky());
         String[] moznosti = spravce.getAktualniOtazka().getMoznosti();
@@ -47,9 +59,14 @@ public class KvizOkno extends  JFrame {
         }
     }
 
+    /**
+     * Zpracuje odpoved, oznaci spravnost a prejde na dalsi otazku
+     * @param odpoved odpoved kterou uzivatel vybral
+     */
     private void zpracujOdpoved(String odpoved) {
         boolean spravna = spravce.zkontrolujOdpoved(odpoved);
 
+        // Zakáže tlačítka a označí správnou/špatnou odpověď barvou
         for (JButton t : tlacitka) {
             t.setEnabled(false);
             if (t.getText().equals(spravce.getAktualniOtazka().getSpravnaOdpoved())) {
@@ -59,6 +76,7 @@ public class KvizOkno extends  JFrame {
             }
         }
 
+        // Po 1 sekundě přejde na další otázku nebo zobrazí výsledky
         Timer casovac = new Timer(1000, e -> {
             if (spravce.masDalsiOtazku()) {
                 spravce.dalsiOtazka();
